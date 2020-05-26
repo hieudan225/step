@@ -3,16 +3,51 @@
   <head>
     <meta charset="UTF-8">
     <title>My Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caladea&family=Karma:wght@700&display=swap" rel="stylesheet">    
+    <script defer src="https://unpkg.com/swup@latest/dist/swup.min.js"></script>  
+    <script defer src="script.js"></script>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <div> 
+      <h2> </h2>
+    </div>
   </head>
   <body>
-    <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+    <div class="bg-image">
+      <div class="container">
+        <div class="header">
+          <main id="swup" class="transition-fade">
+          <nav>
+            <ul>
+              <li><a href="#" style="border: 2px solid #fff ;">Home</a></li>
+              <li><a href="/intro.html">About</a></li>
+              <li><a href="#">Projects</a></li>
+              <li><a href="#">Hobbies</a></li>
+            </ul>
+            <button class="btn">Contact</button>
+            <div class="title">
+              <h2 style="position: absolute;
+                        top: 2%;
+                        left: 25%;
+                        transform: translate(-50%, -50%);
+                        color: #fff;
+                        font-size: 30px;
+                        font-family: 'Abel', sans-serif;
+                         ">Welcome to...</h2>
+              <h1 style= "border-top: 3px solid #fff; border-bottom: 3px solid #fff">DAN HIEU LE</h1>
+              <h2 style="position: absolute;
+                        top: 60%;
+                        left: 68%;
+                        
+                        color: #fff;
+                        font-size: 30px;
+                        font-family: 'Abel', sans-serif;
+                        "> portfolio</h2>
+            </div>
+            <button class = "learn-more-btn" onclick="location.href='intro.html'">Learn More</button>
+          </nav>
+          </main>
+        </div>
+      </div>
     </div>
   </body>
 </html>
