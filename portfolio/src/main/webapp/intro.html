@@ -2,57 +2,55 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Caladea&family=Karma:wght@700&display=swap" rel="stylesheet">
-    <script defer src="/node_modules/swup/dist/swup.min.js"></script>  
+    <title>About me</title>
+    <script defer src="node_modules/swup/dist/swup.min.js" type="Module"></script>  
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="intro-style.css">
   </head>
   <body>
     <div class="bg-image">
         <div class="header">
+            <nav>
+                <ul>
+                    <li><a href="#" >Home</a></li>
+                    <li><a href="/intro.html" style="border: 2px solid #fff ;">About me</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li><a href="#">Hobbies</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>  
             <main id="swup" class="transition-fade">
-                <nav>
-                    <ul>
-                        <li><a href="/index.html">Home</a></li>
-                        <li><a href="#" style="border: 2px solid #fff ;">About</a></li>
-                        <li><a href="#">Projects</a></li>
-                        <li><a href="#">Hobbies</a></li>
-                    </ul>
-                    <button class="btn">Contact</button>
-                </nav>
-                <div id="content">
-                <h1 style="color: #fff;
-                                    font-size: 30px;
-                                    font-family: 'Abel', sans-serif;">About me</h1>
-                <p style = "color: #fff;
-                                    font-size: 20px;
-                                    font-family: 'Abel', sans-serif;">Hello! Welcome to <b>Dan Le</b>'s portfolio.</p>
-                <p style = "color: #fff;
-                                    font-size: 20px;
-                                    font-family: 'Abel', sans-serif;">I'm a programmer from the University of Massachusetts - Amherst.</p>
-                <p style = "color: #fff;
-                                    font-size: 20px;
-                                    font-family: 'Abel', sans-serif;">I love traveling and exploring. I enjoy trying out different cuisine.</p>
-                <p style = "color: #fff;
-                                    font-size: 20px;
-                                    font-family: 'Abel', sans-serif;">Here are some pictures of me:</p>
-                <div id="images">
-                    <figure>
-                        <a href="images/dan2.jpg"><img src='images/dan2.jpg' alt='A picture of me' width="300"/></a>
-                        <figcaption>This is a picture of me wearing Vietnamese traditional Ao-dai on Tet holiday in 2018.</figcaption>
-                    </figure>
-                    <figure>
-                        <img src='images/dan1.jpg' alt='A picture of me' width="300"/>
-                        <figcaption>This picture of me was taken in front of my house 2 years ago.</figcaption>
-                    </figure>
+                <div class="content">
+                    <p style = "color: #fff;
+                                font-size: 20px;
+                                font-family: 'Abel', sans-serif;">Hello! Welcome to <b>Dan Le</b>'s portfolio.</p>
+                    <p style = "color: #fff;
+                                font-size: 20px;
+                                font-family: 'Abel', sans-serif;">I'm a programmer from the University of Massachusetts - Amherst.</p>
+                    <p style = "color: #fff;
+                                font-size: 20px;
+                                font-family: 'Abel', sans-serif;">I love traveling and exploring. I enjoy trying out different cuisine.</p>
+                    <p style = "color: #fff;
+                                font-size: 20px;
+                                font-family: 'Abel', sans-serif;">Here are some pictures of me:</p>
+                    <div id="images">
+                        <figure>
+                            <a href="images/dan2.jpg"><img src='images/dan2.jpg' alt='A picture of me' width="300"/></a>
+                            <figcaption>This is a picture of me wearing Vietnamese traditional Ao-dai on Tet holiday in 2018.</figcaption>
+                        </figure>
+                        <figure>
+                            <img src='images/dan1.jpg' alt='A picture of me' width="300"/>
+                            <figcaption>This picture of me was taken in front of my house 2 years ago.</figcaption>
+                        </figure>
+                    </div>
+                    <p style = "color: #fff;
+                                        font-size: 20px;
+                                        font-family: 'Abel', sans-serif;">Click here to get a random fact about me:</p>
+                    <button onclick="fact()" style="border: 1px solid #fff; 
+                                                    font-family: 'Abel', sans-serif;">Fact generator</button>
+                    <div id="fact-container"></div>
                 </div>
-                <p style = "color: #fff;
-                                    font-size: 20px;
-                                    font-family: 'Abel', sans-serif;">Click here to get a random fact about me:</p>
-                <button onclick="fact()" style="border: 1px solid #fff; 
-                                                font-family: 'Abel', sans-serif;">Fact generator</button>
-                <div id="fact-container"></div>
+                
             </main>
         </div>
     </div>

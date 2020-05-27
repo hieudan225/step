@@ -24,7 +24,7 @@ body {
 }
 nav>ul{
   position: absolute;
-  right:150px;
+  right: 100px;
   
 }
 nav{
@@ -44,29 +44,10 @@ nav>ul>li>a{
   padding: 3px 20px 3px 20px;
   right:0;
 }
-.btn{
-  top:12px;
-  width: 120px;
-  height: 40px;
-  background: #200204;
-  font-size: 20px;
-  font-weight: bold;
-  font-family: 'Abel', sans-serif;
-  border: none;
-  border-radius:  5px;
-  color: #eee;
-  position: absolute;
-  right:0;
-  transition: 0.6s ease;
 
-}
-.btn:hover{
-  background-color: #eee;
-  color: #200204;
-}
 .title {
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -95,19 +76,11 @@ nav>ul>li>a{
   color: #200204;
   text-decoration: none;
 }
-.transition-fade{
-    opacity: 1;
-    transition: 0.5s;
-    
-    
+.transition-fade {
+  transition: 0.4s;
+  opacity: 1;
 }
-.html.is-animating.transition-fade{
-    opacity: 1;
-    
-    
-}
-.html.is-leaving.transition-fade{
-    opacity: 0;
-    transform: translate(120px, 50%);
-   
+
+html.is-animating .transition-fade {
+  opacity: 0;
 }
