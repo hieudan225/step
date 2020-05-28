@@ -1,51 +1,18 @@
 <!DOCTYPE html>
 <html>
-<title>Dan Le's Portfolio</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script defer src="intro-script.js"></script>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-.bg-image{
-  width: 100%;
-  height:   100%;
-  background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('images/p0.jpeg') no-repeat fixed center;
-  background-size: cover;
-}
-.learn-more-btn{
-  font-size: 20px;
-  font-family: 'Abel', sans-serif;
-  border: 1px solid #fff;
-  padding: 10px 30px;
-  background-color: transparent;
-  color: #fff;
-  text-decoration: none;
-  position: absolute;
-  top: 80%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: 0.6s ease;
-}
-.learn-more-btn:hover{
-  border: 1px solid #fff;
-  background-color: #fff;
-  color: #200204;
-  text-decoration: none;
-}
-body, h1,h2,h3,h4,h5,h6 {font-family: 'Noto Sans JP', sans-serif;}
-.w3-row-padding img {margin-bottom: 12px}
-/* Set the width of the sidebar to 120px */
-.w3-sidebar {width: 120px;
-             background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('images/p0.jpeg') no-repeat fixed center;}
-/* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
-#main {margin-left: 120px}
-/* Remove margins from "page content" on small screens */
-@media only screen and (max-width: 600px) {#main {margin-left: 0}}
-</style>
+<head>
+  <title>Dan Le's Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script defer src="intro-script.js"></script>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body class="w3-black">
+  <main id="swup" class="transition-fade">
 <div class="bg-image">
 <!-- Icon Bar (Sidebar - hidden on small screens) -->
 <nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
@@ -55,15 +22,15 @@ body, h1,h2,h3,h4,h5,h6 {font-family: 'Noto Sans JP', sans-serif;}
     <i class="fa fa-home w3-xxlarge"></i>
     <p>HOME</p>
   </a>
-  <a href="#about" class="w3-bar-item w3-button w3-padding-large w3-hover-white">
+  <a href="#about" class="w3-bar-item w3-button w3-padding-large w3-hover-white" data-no-swup>
     <i class="material-icons" style="font-size:36px">person</i>
     <p>ABOUT</p>
   </a>
-  <a href="#projects" class="w3-bar-item w3-button w3-padding-large w3-hover-white">
+  <a href="#projects" class="w3-bar-item w3-button w3-padding-large w3-hover-white" data-no-swup>
     <i class="material-icons" style="font-size:36px">work</i>
     <p>PROJECTS</p>
   </a>
-  <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hover-white">
+  <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hover-white" data-no-swup>
     <i class="fa fa-envelope w3-xxlarge"></i>
     <p>CONTACT</p>
   </a>
@@ -166,5 +133,10 @@ body, h1,h2,h3,h4,h5,h6 {font-family: 'Noto Sans JP', sans-serif;}
 <!-- END PAGE CONTENT -->
 </div>
 
+</main>
 </body>
+  <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script>  
+  <script type="text/javascript">
+    const swup = new Swup({linkSelector: "a:not([data-no-swup])"}); // only this line when included with script tag
+  </script>
 </html>

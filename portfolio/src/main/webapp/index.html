@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
     <title>Dan Le's Portfolio</title>      
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer src="intro-script.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles.css">
   </head>
-  <body>
+  <body >
+    <main id="swup" class="transition-fade">
     <div class="bg-image">
       <div class="container">
         <div class="header">
-            
-            <main id="swup" class="transition-fade">
                 </nav>
                 <div class="title">
                     <h2 style="position: absolute;
-                                top: 0%;
                                 left: 25%;
+                                top: 5%;
                                 transform: translate(-50%, -50%);
                                 color: #fff;
                                 font-size: 30px;
                                 font-family: 'Abel', sans-serif;
                                 ">Welcome to...</h2>
-                    <h1 style= "border-top: 3px solid #fff; border-bottom: 3px solid #fff">DAN HIEU LE</h1>
+                    <h1 style= "border-top: 3px solid #fff; border-bottom: 3px solid #fff;">DAN HIEU LE</h1>
                     <h2 style="position: absolute;
                                 top: 60%;
                                 left: 68%;
@@ -30,12 +35,15 @@
                                 font-family: 'Abel', sans-serif;
                                 "> portfolio</h2>
                 </div>
-                <button class = "learn-more-btn" onclick="location.href='intro.html'">Click here to learn more</button>
-            </main>
-            
+                <a class = "learn-more-btn" href="intro.html">Click here to learn more</a>
         </div>
       </div>
     </div>
-    
+
+</main>    
   </body>
+  <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script>  
+  <script type="text/javascript">
+    const swup = new Swup({linkSelector: "a:not([data-no-swup])"}); // only this line when included with script tag
+  </script>
 </html>
