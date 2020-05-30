@@ -1,0 +1,161 @@
+#content {
+  margin-left: auto;
+  margin-right: auto;
+  width: 650px;
+}
+
+body {
+  background: #eee;
+}
+#greeting-container {
+  margin-top: 20px;
+}
+.bg-image{
+  width: 100%;
+  height:   1000px;
+  background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('images/p0.jpeg') no-repeat fixed center;;
+  background-size: cover;
+}
+.container{
+  width: 960px;
+  height: 100vh;
+  position: relative;
+  margin: 0 auto;
+}
+nav>ul{
+  position: absolute;
+  right: 100px;
+  
+}
+nav{
+  padding-top: 5px;
+}
+nav>ul>li{
+  list-style: none;
+  float: left;
+
+}
+nav>ul>li>a{
+  text-decoration: none;
+  font-family: 'Abel', sans-serif;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 3px 20px 3px 20px;
+  right:0;
+}
+
+
+.learn-more-btn{
+  font-size: 20px;
+  font-family: 'Abel', sans-serif;
+  border: 1px solid #fff;
+  padding: 10px 30px;
+  background-color: transparent;
+  color: #fff;
+  text-decoration: none;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.6s ease;
+}
+.learn-more-btn:hover{
+  border: 1px solid #fff;
+  background-color: #fff;
+  color: #200204;
+  text-decoration: none;
+}
+.overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: red;
+    left:0;
+    top:0;
+    transform: scale(0);
+    transform-origin:left;
+}
+.transition-fade{
+    transition: 0.4s;
+    opacity: 1;
+}
+html.is-animating .transition-fade{
+    opacity: 0;
+    /*transform:translateY(-100px);*/
+}
+.transition-left{
+    transition: .4s;
+    transform: translateX(0);
+}
+html.is-animating .transition-left{
+    opacity: 0;
+    transform: translateX(-100px);
+}
+
+.transition-wipe{
+    transition: 0.7s cubic-bezier(0, 0, 0.58, 1);
+    transform: scaleX(0);
+}
+html.is-animating .transition-wipe{
+    transform:scaleX(1);
+}
+
+.bg-image{
+  width: 100%;
+  height:   100%;
+  background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('images/p0.jpeg') no-repeat fixed center;
+  background-size: cover;
+}
+.learn-more-btn{
+  font-size: 20px;
+  font-family: 'Abel', sans-serif;
+  border: 1px solid #fff;
+  padding: 10px 30px;
+  background-color: transparent;
+  color: #fff;
+  text-decoration: none;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.6s ease;
+}
+.learn-more-btn:hover{
+  border: 1px solid #fff;
+  background-color: #fff;
+  color: #200204;
+  text-decoration: none;
+}
+body, h1,h2,h3,h4,h5,h6 {font-family: 'Noto Sans JP', sans-serif; color: #fff;}
+.w3-row-padding img {margin-bottom: 12px}
+/* Set the width of the sidebar to 120px */
+.w3-sidebar {width: 120px;
+             background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('images/p0.jpeg') no-repeat fixed center;}
+/* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+#main {margin-left: 120px}
+/* Remove margins from "page content" on small screens */
+@media only screen and (max-width: 600px) {#main {margin-left: 0}}
+
+body {
+  height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+.title {
+  position: absolute;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important; 
+  height: 200px;
+}
+.title h1{
+    position: relative;
+  color: #fff;
+  top: 15% !important;
+  font-size: 60px !important;
+  font-family: 'Abel', sans-serif;
+  
+}
