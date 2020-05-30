@@ -13,7 +13,8 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,10 +25,25 @@ import javax.servlet.http.HttpServletResponse;
 TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
+  private List<String> images;
+  private int prevIndex = -1;
+  @Override
+  public void init() {
+      images = new ArrayList<>();
+      images.add("images/p1.jpg");
+      images.add("images/p2.jpg");
+      images.add("images/p3.jpg");
+      images.add("images/p4.jpg");
+  }
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    int randomIndex = (int) (Math.random()*this.images.size());
+    while (prevIndex == randomIndex) {
+        randomIndex = (int) (Math.random()*this.images.size());
+    }
+    this.prevIndex = randomIndex;
+    String randomImage = this.images.get(randomIndex);
     response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Dan!</h1>");
+    response.getWriter().println(randomImage);
   }
 }
