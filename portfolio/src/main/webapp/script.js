@@ -24,3 +24,18 @@ async function getRandomImageAsync() {
     console.log(imageURL);
     document.getElementById("bg-image").style.background = "linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(" + imageURL +") no-repeat fixed center";
 };
+
+async function getComment() {
+    let response = await fetch("/data");
+    console.log("Got respone");
+    let json = await response.json();
+    console.log(json);
+    let container = document.getElementById("comment-container");
+    container.innerHTML = "";
+    json.forEach(element => {
+        let node = document.createElement("LI");                 // Create a <li> node
+        let textnode = document.createTextNode(element);         // Create a text node
+        node.appendChild(textnode);
+        container.appendChild(node);
+    });
+}

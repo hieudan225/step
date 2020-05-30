@@ -15,6 +15,7 @@
 package com.google.sps.servlets;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,6 +38,7 @@ public class DataServlet extends HttpServlet {
   }
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    /* Week 3 - Step 2 - Get random quotes (images) from server
     int randomIndex = (int) (Math.random()*this.images.size());
     while (prevIndex == randomIndex) {
         randomIndex = (int) (Math.random()*this.images.size());
@@ -45,5 +47,15 @@ public class DataServlet extends HttpServlet {
     String randomImage = this.images.get(randomIndex);
     response.setContentType("text/html;");
     response.getWriter().println(randomImage);
+    */
+
+    /*Week 3 - Step 3 - Using JSON*/
+    response.setContentType("application/json;");
+    response.getWriter().println(convertToJson());
+  }
+  private String convertToJson() {
+      Gson gson = new Gson();
+      String json = gson.toJson(this.images);
+      return json;
   }
 }
