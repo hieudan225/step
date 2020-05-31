@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+import com.google.sps.data.Comment;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
@@ -24,38 +25,30 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. 
 TODO: modify this file to handle comments data */
-@WebServlet("/data")
+@WebServlet("/comment")
 public class DataServlet extends HttpServlet {
-  private List<String> images;
-  private int prevIndex = -1;
+  private List<Comment> comments;
   @Override
   public void init() {
-      images = new ArrayList<>();
-      images.add("images/p1.jpg");
-      images.add("images/p2.jpg");
-      images.add("images/p3.jpg");
-      images.add("images/p4.jpg");
+      comments = new ArrayList<>();
   }
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    /* Week 3 - Step 2 - Get random quotes (images) from server
-    int randomIndex = (int) (Math.random()*this.images.size());
-    while (prevIndex == randomIndex) {
-        randomIndex = (int) (Math.random()*this.images.size());
-    }
-    this.prevIndex = randomIndex;
-    String randomImage = this.images.get(randomIndex);
-    response.setContentType("text/html;");
-    response.getWriter().println(randomImage);
-    */
-
-    /*Week 3 - Step 3 - Using JSON*/
     response.setContentType("application/json;");
     response.getWriter().println(convertToJson());
+
   }
   private String convertToJson() {
       Gson gson = new Gson();
-      String json = gson.toJson(this.images);
+      String json = gson.toJson(this.comments);
       return json;
+  }
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String name = request.getParameter("name");
+    String comment = request.getParameter("comment");
+    Comment newComment = new Comment(name, comment);
+    comments.add(newComment);
+    response.sendRedirect("/intro.html#comment");
   }
 }

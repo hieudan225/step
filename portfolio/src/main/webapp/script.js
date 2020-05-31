@@ -1,41 +1,33 @@
-/* Using promise but without arrow function */
-function getRandomImage() {
-    let responsePromise = fetch("/data");
-    responsePromise.then(handleResponse);
-}
-function handleResponse(response) {
-    console.log("Got respone");
-    let textPromise = response.text();
-    textPromise.then(handleText);
-}
-function handleText(imageURL) {
-    console.log(imageURL);
-    document.getElementById("bg-image").style.background = "linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(" + imageURL +") no-repeat fixed center";
-}
-/* Using promise and arrow function */
-function getRandomImageArrow() {
-    fetch("/data").then(response => response.text()).then(imageURL => document.getElementById("bg-image").style.background = "linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(" + imageURL +") no-repeat fixed center");
-}
-/* Using asyn and await */
+/*Handle background-change request */
 async function getRandomImageAsync() {
-    let response = await fetch("/data");
+    let response = await fetch("/background-change");
     console.log("Got respone");
     let imageURL = await response.text();
     console.log(imageURL);
     document.getElementById("bg-image").style.background = "linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(" + imageURL +") no-repeat fixed center";
 };
 
-async function getComment() {
-    let response = await fetch("/data");
+/*Handle onload for comment section in intro.html*/
+async function getExistingComments() {
+    let response = await fetch("/comment");
     console.log("Got respone");
     let json = await response.json();
     console.log(json);
     let container = document.getElementById("comment-container");
     container.innerHTML = "";
     json.forEach(element => {
-        let node = document.createElement("LI");                 // Create a <li> node
-        let textnode = document.createTextNode(element);         // Create a text node
-        node.appendChild(textnode);
+        let node = document.createElement("LI"); 
+        let name = document.createElement("P");
+        name.innerText = "Name: " + element.name;
+        let time = document.createElement("P");
+        time.innerText = "Time: " + element.time;
+        let comment = document.createElement("P");
+        comment.innerText = "Comment: " + element.comment;
+
+        node.appendChild(name);
+        node.appendChild(time);
+        node.appendChild(comment);
+        
         container.appendChild(node);
     });
 }

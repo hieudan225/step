@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="w3-black">
+<body class="w3-black" onload="getExistingComments()">
   <main id="swup" class="transition-fade">
 <div class="bg-image">
 <!-- Icon Bar (Sidebar - hidden on small screens) -->
@@ -129,13 +129,23 @@
     </div><br>
   <!-- End Contact Section -->
   </div>
-  <div class="w3-padding-64 w3-content w3-text-grey" id="comment">
+  <!-- Comment Section -->
+  <div class="w3-padding-64 w3-content w3-text-grey" id="comment" >
     <h2 class="w3-text-light-grey">Comment something</h2>
     <hr style="width:200px" class="w3-opacity">
-    <p style="color:#fff;">Click here to see the previous comments:</p>
-    <button onclick="getComment()">See the comments</button>
-    <ul id="comment-container" style="color:#fff;"></ul>
-    </div><br>
+
+    <ul id= "comment-container" style="color:#fff;"></ul>
+
+    <form action="/comment" method="POST">
+        <label for="name" style="color:#fff;">Your name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="comment" style="color:#fff;">Your comment: </label><br>
+        <textarea id="comment" name="comment" rows="4" cols="50"></textarea>
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+  </div><br>
+      <!-- End Comment Section -->
 </div>
     <!-- Footer -->
   <footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
