@@ -9,25 +9,36 @@ async function getRandomImageAsync() {
 
 /*Handle onload for comment section in intro.html*/
 async function getExistingComments() {
-    let response = await fetch("/comment");
+    let response = await fetch("/list-comments");
     console.log("Got respone");
     let json = await response.json();
     console.log(json);
     let container = document.getElementById("comment-container");
     container.innerHTML = "";
-    json.forEach(element => {
+    json.forEach(comment => {
         let node = document.createElement("LI"); 
-        let name = document.createElement("P");
-        name.innerText = "Name: " + element.name;
-        let time = document.createElement("P");
-        time.innerText = "Time: " + element.time;
-        let comment = document.createElement("P");
-        comment.innerText = "Comment: " + element.comment;
-
+        
+        let name = document.createElement("span");
+        name.innerText = "Name: " + comment.name;
+        let content = document.createElement("span");
+        content.innerText = "Content: " + comment.content;
+        
+        let deleteElement = document.createElement("button");
+        deleteElement.innerText = "delete";
+        deleteElement.addEventListener('click', () => {
+            node.remove();
+            deleteEntity(comment.id);
+        });
         node.appendChild(name);
-        node.appendChild(time);
-        node.appendChild(comment);
+        node.appendChild(content);
+        node.appendChild(deleteElement);
         
         container.appendChild(node);
     });
+}
+
+function deleteEntity(id) {
+    const params = new URLSearchParams();
+    params.append('id', id);
+    fetch('/delete-comment', {method: 'POST', body: params});
 }

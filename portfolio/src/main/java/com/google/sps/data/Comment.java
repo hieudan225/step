@@ -3,24 +3,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime; 
 public class Comment {
     
+    private long id;
     private String name;
-    private String comment;
-    private String time;
+    private String content;
+    private long timestamp;
 
-    public Comment(String name, String comment) {
+    public Comment(long id, String name, String content, long timestamp) {
+        this.id = id;
         this.name = name;
-        this.comment = comment;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        this.time = dtf.format(now);
-    }
-    public String getName() {
-        return this.name;
-    }
-    public String getComment() {
-        return this.comment;
-    }
-    public String getTime() {
-        return this.time;
+        this.content = content;
+        this.timestamp = timestamp;
     }
 }
