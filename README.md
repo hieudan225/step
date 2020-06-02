@@ -7,6 +7,4 @@ To get started:
 - Open the GitHub setup walkthrough: `teachme ~/step/walkthroughs/week-1-setup/github-setup-walkthrough.md`
   - If the tutorial panel does not open or display the walkthrough contents, try refreshing the page.
 Then follow the on-screen instructions to set up your repo.
-dhle@cloudshell:~/step$ nano README.md
-Use "fg" to return to nano.
 
