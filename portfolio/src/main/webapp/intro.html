@@ -134,8 +134,15 @@
     <h2 class="w3-text-light-grey">Comment something</h2>
     <hr style="width:200px" class="w3-opacity">
 
-    <ul id= "comment-container" style="color:#fff;"></ul>
 
+    <label for="maxComments" style="color:#fff;">The number of comments you want to see: </label><br>
+    <input name="maxComments" id="maxComments" min = 0 type="number">
+    <button action="POST" onclick="setMaxComments()">Set Max Comments</button>
+  
+    <ul id= "comment-container" style="color:#fff;"></ul>
+    
+    <button onclick="deleteAllComments()">Delete All Comments</button>
+    <p id = "delete" style="color:#fff;"></p>
     <form action="/new-comment" method="POST">
         <label for="name" style="color:#fff;">Your name:</label><br>
         <input type="text" id="name" name="name"><br>

@@ -36,14 +36,17 @@ import javax.servlet.http.HttpServletResponse;
 public class ListComments extends HttpServlet {
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Integer maxComments = Integer.parseInt(request.getParameter("maxComments"));
     Query query = new Query("comment").addSort("timestamp", SortDirection.DESCENDING);
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
     List<Comment> comments = new ArrayList<>();
+    int count = 0;
     for (Entity entity: results.asIterable()) {
+        if (count >= maxComments) break;
         long id = entity.getKey().getId();
         String name = (String) entity.getProperty("name");
         String content = (String) entity.getProperty("content");
@@ -51,10 +54,10 @@ public class ListComments extends HttpServlet {
 
         Comment comment = new Comment(id, name, content, timestamp);
         comments.add(comment);
+        count++;
     }
 
     Gson gson = new Gson();
-
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(comments));
 

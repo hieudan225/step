@@ -23,6 +23,13 @@
       <version>4.0.1</version>
       <scope>provided</scope>
     </dependency>
+    
+    <dependency>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-api-labs</artifactId>
+        <version>1.9.80</version>
+    </dependency>
+
     <dependency>
         <groupId>com.google.code.gson</groupId>
         <artifactId>gson</artifactId>

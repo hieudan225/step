@@ -8,14 +8,33 @@ async function getRandomImageAsync() {
 };
 
 /*Handle onload for comment section in intro.html*/
+async function setMaxComments() {
+    let maxComments = document.getElementById("maxComments").value;
+
+    const params = new URLSearchParams();
+    params.append('maxComments', maxComments);
+    await fetch('/max-comments', {method: 'POST', body: params});
+    location.reload();
+}
+
 async function getExistingComments() {
-    let response = await fetch("/list-comments");
+
+    let maxCommentsRep = await fetch("/max-comments");
+    let maxCommentsText = await maxCommentsRep.text();
+    let maxComments = parseInt(maxCommentsText, 10);
+
+    console.log(maxComments);
+    const params = new URLSearchParams();
+    params.append('maxComments', maxComments);
+    
+    let response = await fetch('/list-comments', {method: 'POST', body: params});
     console.log("Got respone");
     let json = await response.json();
     console.log(json);
     let container = document.getElementById("comment-container");
     container.innerHTML = "";
-    json.forEach(comment => {
+    for (let i = 0; i < json.length; ++i) {
+        let comment = json[i];
         let node = document.createElement("LI"); 
         
         let name = document.createElement("span");
@@ -34,11 +53,20 @@ async function getExistingComments() {
         node.appendChild(deleteElement);
         
         container.appendChild(node);
-    });
+        };
 }
 
-function deleteEntity(id) {
+
+async function deleteEntity(id) {
     const params = new URLSearchParams();
     params.append('id', id);
-    fetch('/delete-comment', {method: 'POST', body: params});
+    await fetch('/delete-comment', {method: 'POST', body: params});
+}
+
+async function deleteAllComments() {
+    await fetch('/delete-all-comments');
+
+    let deleteConatiner = document.getElementById("delete");
+    deleteConatiner.innerText = "Finish deleting.";
+    setTimeout(location.reload(), 1000);
 }
