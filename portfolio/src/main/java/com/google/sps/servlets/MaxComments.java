@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/max-comments")
 public class MaxComments extends HttpServlet {
     private Integer maxComments = 3;
+    
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;");

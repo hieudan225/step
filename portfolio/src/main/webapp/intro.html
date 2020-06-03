@@ -64,6 +64,7 @@
   <!-- About Section -->
   <div class="w3-content w3-justify w3-text-grey w3-padding-64" id="about">
     <div>
+        
         <h2 style = "color:#fff">About me</h2>
         <hr style="width:200px" class="w3-opacity">
         <p style = "color: #fff; font-size = 25;">I'm a rising Computer Science sophomore at the University of Massachusetts - Amherst.
@@ -73,9 +74,12 @@
         <p style = "color: #fff; font-size = 25;">I enjoy cooking, listening to music, traveling, and Photography. Here are some pictures that I've took in my hometown Da-lat.
         </p>
         <p style = "color: #fff;font-size = 25;">Click here to get a random fact about me:</p>
+        
         <button onclick="fact()" style="border: 1px solid #fff; 
                                                     font-family: 'Abel', sans-serif;font-size = 25;">Fact generator</button>
+        
         <div id="fact-container" style="color:#fff;font-size = 25;"></div>
+
     </div>
    <div class="w3-row" >
         <div class="w3-col s4 w3-green w3-center">
@@ -136,18 +140,18 @@
 
 
     <label for="maxComments" style="color:#fff;">The number of comments you want to see: </label><br>
-    <input name="maxComments" id="maxComments" min = 0 type="number">
-    <button action="POST" onclick="setMaxComments()">Set Max Comments</button>
+    <input name="maxComments" id="maxComments" min = 0 max = 10 type="number">
+    <button onclick="setMaxComments()">Set Max Comments</button>
   
     <ul id= "comment-container" style="color:#fff;"></ul>
     
     <button onclick="deleteAllComments()">Delete All Comments</button>
     <p id = "delete" style="color:#fff;"></p>
-    <form action="/new-comment" method="POST">
-        <label for="name" style="color:#fff;">Your name:</label><br>
-        <input type="text" id="name" name="name"><br>
+    <form id="myComment" onsubmit="validateForm()">
+        <label for="name" style="color:#fff;">Your name (must contains alphabet letters only):</label><br>
+        <input type="text" id="name" name="name" minlength="3" maxlength="12"><br>
         <label for="content" style="color:#fff;">Your comment: </label><br>
-        <textarea id="content" name="content" rows="4" cols="50"></textarea>
+        <textarea type="text" id="content" name="content" rows="4" cols="50" minlength="8"></textarea>
         <br><br>
         <input type="submit" value="Submit">
     </form>

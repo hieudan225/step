@@ -7,6 +7,25 @@ async function getRandomImageAsync() {
     document.getElementById("bg-image").style.background = "linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(" + imageURL +") no-repeat fixed center";
 };
 
+function isLetter(c) {
+  return c.match("/^[A-Za-z]+$/");
+} 
+
+async function validateForm() {
+  let name = document.getElementById("myComment")["name"].value;
+  let content = document.forms["myComment"]["content"].value;
+  if (!isLetter(name[i])) {
+    alert("JS: Name must alphabet letter only.");
+  } else {
+    const params = new URLSearchParams();
+    params.append('name', name);
+    params.append('content', content);
+    //await fetch('/new-comment', {method: 'POST', body: params});
+    //location.reload();
+
+  }
+}
+
 /*Handle onload for comment section in intro.html*/
 async function setMaxComments() {
     let maxComments = document.getElementById("maxComments").value;
@@ -16,14 +35,14 @@ async function setMaxComments() {
     await fetch('/max-comments', {method: 'POST', body: params});
     location.reload();
 }
-
+/*Load comments history for comment section in intro.html */
 async function getExistingComments() {
 
     let maxCommentsRep = await fetch("/max-comments");
     let maxCommentsText = await maxCommentsRep.text();
     let maxComments = parseInt(maxCommentsText, 10);
 
-    console.log(maxComments);
+    
     const params = new URLSearchParams();
     params.append('maxComments', maxComments);
     
@@ -64,9 +83,11 @@ async function deleteEntity(id) {
 }
 
 async function deleteAllComments() {
-    await fetch('/delete-all-comments');
-
-    let deleteConatiner = document.getElementById("delete");
-    deleteConatiner.innerText = "Finish deleting.";
-    setTimeout(location.reload(), 1000);
+    let response = await fetch('/delete-all-comments');
+    let repText = await response.text();
+    while (repText === "false") {
+        response = await fetch('/delete-all-comments');
+        repText = await response.text();
+    }
+    location.reload();
 }

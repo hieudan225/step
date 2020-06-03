@@ -8,11 +8,6 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.FetchOptions;
 
-import com.google.appengine.api.labs.taskqueue;
-import com.google.appengine.api.labs.taskqueue.QueueFactory;
-import com.google.appengine.api.labs.taskqueue.TaskOptions.Method;
-import static com.google.appengine.api.labs.taskqueue.TaskOptions.Builder.url;
-
 import com.google.sps.data.Comment;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/delete-all-comments")
 public class DeleteAllComments extends HttpServlet {
   public boolean finished = false;
-  public long deleted = 0;
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     long start = System.currentTimeMillis();
 
@@ -49,7 +42,6 @@ public class DeleteAllComments extends HttpServlet {
         }
         try {
             datastore.delete(keys);
-            deleted += keys.size();
             break;
         } catch (Throwable ignore) {
             continue;
@@ -59,7 +51,9 @@ public class DeleteAllComments extends HttpServlet {
         response.sendRedirect("/intro.html#comment");
     }
     else {
-        QueueFactory.getDefaultQueue().add(url("/delete-all-comments").method(Method.GET));
+        response.setContentType("text/html;");
+        response.getWriter().println(finished);
     }
+    
   }
 }
