@@ -22,7 +22,7 @@ async function validateForm() {
     params.append('name', name);
     params.append('content', content);
     await fetch('/new-comment', {method: 'POST', body: params});
-
+    location.reload();
   }
 }
 
