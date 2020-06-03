@@ -7,21 +7,21 @@ async function getRandomImageAsync() {
     document.getElementById("bg-image").style.background = "linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(" + imageURL +") no-repeat fixed center";
 };
 
-function isLetter(c) {
-  return c.match("/^[A-Za-z]+$/");
+function isLetter(s) {
+  let alphaExp = /^[a-zA-Z() ]+$/;
+  return alphaExp.test(s);
 } 
 
 async function validateForm() {
-  let name = document.getElementById("myComment")["name"].value;
-  let content = document.forms["myComment"]["content"].value;
-  if (!isLetter(name[i])) {
+  let name = document.getElementById("name").value;
+  let content = document.getElementById("content").value;
+  if (!isLetter(name)) {
     alert("JS: Name must alphabet letter only.");
   } else {
     const params = new URLSearchParams();
     params.append('name', name);
     params.append('content', content);
-    //await fetch('/new-comment', {method: 'POST', body: params});
-    //location.reload();
+    await fetch('/new-comment', {method: 'POST', body: params});
 
   }
 }

@@ -147,14 +147,14 @@
     
     <button onclick="deleteAllComments()">Delete All Comments</button>
     <p id = "delete" style="color:#fff;"></p>
-    <form id="myComment" onsubmit="validateForm()">
+    <div id="myComment">
         <label for="name" style="color:#fff;">Your name (must contains alphabet letters only):</label><br>
         <input type="text" id="name" name="name" minlength="3" maxlength="12"><br>
         <label for="content" style="color:#fff;">Your comment: </label><br>
         <textarea type="text" id="content" name="content" rows="4" cols="50" minlength="8"></textarea>
         <br><br>
-        <input type="submit" value="Submit">
-    </form>
+        <button type="submit" value="Submit" onClick="validateForm()">Submit</button>
+    </div>
   </div><br>
       <!-- End Comment Section -->
 </div>

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 public class NewComment extends HttpServlet {
 
   public static boolean isAlpha(String s) {
-      return s!= null && s.matches("^[a-zA-Z]*$");
+      return s!= null && s.matches("^[a-zA-Z]*$ ");
   }
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
