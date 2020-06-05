@@ -10,6 +10,8 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.sps.data.Comment;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -35,11 +37,12 @@ public class ListComments extends HttpServlet {
     for (Entity entity: results.asIterable()) {
         if (count >= maxComments) break;
         long id = entity.getKey().getId();
-        String name = (String) entity.getProperty("name");
+        String email = (String) entity.getProperty("email");
         String content = (String) entity.getProperty("content");
         String timestamp = (String) entity.getProperty("timestamp");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");  
 
-        Comment comment = new Comment(id, name, content, timestamp);
+        Comment comment = new Comment(id, email, content, LocalDateTime.parse(timestamp, formatter));
         comments.add(comment);
         count++;
     }
