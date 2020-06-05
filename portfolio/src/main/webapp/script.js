@@ -5,26 +5,8 @@ async function getRandomImageAsync() {
     let imageURL = await response.text();
     console.log(imageURL);
     document.getElementById("bg-image").style.background = "linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(" + imageURL +") no-repeat fixed center";
-};
-
-function isLetter(s) {
-  let alphaExp = /^[a-zA-Z() ]+$/;
-  return alphaExp.test(s);
-} 
-
-async function validateForm() {
-  let name = document.getElementById("name").value;
-  let content = document.getElementById("content").value;
-  if (!isLetter(name)) {
-    alert("JS: Name must alphabet letter only.");
-  } else {
-    const params = new URLSearchParams();
-    params.append('name', name);
-    params.append('content', content);
-    await fetch('/new-comment', {method: 'POST', body: params});
-    location.reload();
-  }
 }
+
 
 /*Handle onload for comment section in intro.html*/
 async function setMaxComments() {
@@ -55,10 +37,13 @@ async function getExistingComments() {
     for (let i = 0; i < json.length; ++i) {
         let comment = json[i];
         let node = document.createElement("LI"); 
+        node.style.border = "2px solid #fff";
+        node.style.margin = "10px";
+        node.style.padding = "10px";
         
-        let name = document.createElement("span");
-        name.innerText = "Name: " + comment.name;
-        let content = document.createElement("span");
+        let name = document.createElement("P");
+        name.innerText = "Email: " + comment.email;
+        let content = document.createElement("P");
         content.innerText = "Content: " + comment.content;
         
         let deleteElement = document.createElement("button");
@@ -83,11 +68,57 @@ async function deleteEntity(id) {
 }
 
 async function deleteAllComments() {
-    let response = await fetch('/delete-all-comments');
+    let response = await fetch('/delete-all-comments', {method: 'POST'});
     let repText = await response.text();
     while (repText === "false") {
-        response = await fetch('/delete-all-comments');
+        response = await fetch('/delete-all-comments', {method: 'POST'});
         repText = await response.text();
     }
+    console.log("Finished");
     location.reload();
+}
+
+async function onLoad() {
+    
+    let loginStatusPromise  = await fetch("/login");
+    let loginStatus = await loginStatusPromise.json();
+    console.log(loginStatus);
+    if (!loginStatus.login) {
+        document.getElementById("login").style.display = "none";
+
+        const loginURL = loginStatus.url;
+        let loginURLContainer = document.getElementById("not-login");
+        let loginURLElement = document.createElement("button");
+        loginURLElement.innerText = "Click here to Login";
+        let num = 1;
+        loginURLElement.addEventListener('click', () => {
+            window.location = loginURL;
+        });
+        loginURLContainer.appendChild(loginURLElement);
+    }
+    else {
+        document.getElementById("not-login").style.display = "none";
+        await getExistingComments();
+
+        const helloUserContainer = document.getElementById("hello-user");
+        let helloUserString = "Hello " + loginStatus.email +"!";
+        let helloUserElement = document.createElement("P");
+        helloUserElement.style.color = "#fff";
+        helloUserElement.innerHTML = helloUserString;
+        helloUserContainer.appendChild(helloUserElement);
+
+        const logoffURL = loginStatus.url;
+        let logoffURLContainer = document.getElementById("logoff");
+        let logoffURLElement = document.createElement("button");
+        logoffURLElement.innerText = "Click here to Logoff";
+        logoffURLElement.addEventListener('click', () => {
+            window.location = logoffURL;
+        });
+        logoffURLContainer.appendChild(logoffURLElement);
+    }
+    
+}
+
+async function onloadUserPage() {
+    
 }

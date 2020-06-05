@@ -16,6 +16,7 @@ body {
   background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('images/p0.jpeg') no-repeat fixed center;
   background-size: cover;
 }
+
 .container{
   width: 960px;
   height: 100vh;
@@ -152,7 +153,7 @@ html {
   height: 200px;
 }
 .title h1{
-    position: relative;
+  position: relative;
   color: #fff;
   top: 15% !important;
   font-size: 60px !important;
@@ -161,16 +162,10 @@ html {
 }
 #comment-container {
   list-style-type: none;
-}
-
-.comment {
-  border: thin solid black;
   display: flex;
   margin: 10px;
   padding: 10px;
-  width: 300px;
+  width: 500px;
+  flex-direction: column;
 }
 
-.comment span {
-  flex-grow: 1;
-}
