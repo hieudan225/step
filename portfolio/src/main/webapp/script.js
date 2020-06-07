@@ -17,6 +17,7 @@ async function setMaxComments() {
     await fetch('/max-comments', {method: 'POST', body: params});
     location.reload();
 }
+
 /*Load comments history for comment section in intro.html */
 async function getExistingComments() {
 
@@ -43,8 +44,12 @@ async function getExistingComments() {
         
         let name = document.createElement("P");
         name.innerText = "Email: " + comment.email;
+        let time = document.createElement("P");
+        time.innerText = "Time: " + comment.timestamp;
         let content = document.createElement("P");
         content.innerText = "Content: " + comment.content;
+        let sentiment = document.createElement("P");
+        sentiment.innerText = "Sentiment: " + comment.sentiment;
         
         let deleteElement = document.createElement("button");
         deleteElement.innerText = "delete";
@@ -53,28 +58,23 @@ async function getExistingComments() {
             deleteEntity(comment.id);
         });
         node.appendChild(name);
+        node.appendChild(timestamp);
         node.appendChild(content);
+        node.appendChild(sentiment);
         node.appendChild(deleteElement);
         
         container.appendChild(node);
         };
 }
 
-
-async function deleteEntity(id) {
+function deleteEntity(id) {
     const params = new URLSearchParams();
     params.append('id', id);
-    await fetch('/delete-comment', {method: 'POST', body: params});
+    fetch('/delete-comment', {method: 'POST', body: params});
 }
 
-async function deleteAllComments() {
-    let response = await fetch('/delete-all-comments', {method: 'POST'});
-    let repText = await response.text();
-    while (repText === "false") {
-        response = await fetch('/delete-all-comments', {method: 'POST'});
-        repText = await response.text();
-    }
-    console.log("Finished");
+function deleteAllComments() {
+    let response = fetch('/delete-all-comments', {method: 'POST'});
     location.reload();
 }
 
@@ -116,9 +116,5 @@ async function onLoad() {
         });
         logoffURLContainer.appendChild(logoffURLElement);
     }
-    
-}
-
-async function onloadUserPage() {
     
 }

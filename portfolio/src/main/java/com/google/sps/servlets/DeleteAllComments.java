@@ -23,31 +23,18 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/delete-all-comments")
 public class DeleteAllComments extends HttpServlet {
   
-  public boolean finished = false;
-  
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    long start = System.currentTimeMillis();
 
-    while (System.currentTimeMillis() - start < 1000) {
-        Query query = new Query("comment").setKeysOnly();
-        Iterator<Entity> iter = datastore.prepare(query).asIterator();
-        
-        while (iter.hasNext()) {
-            datastore.delete(iter.next().getKey());
-        }
-        this.finished = true;
-
+    Query query = new Query("comment").setKeysOnly();
+    Iterator<Entity> iter = datastore.prepare(query).asIterator();
+    
+    while (iter.hasNext()) {
+        datastore.delete(iter.next().getKey());
     }
 
-    if (this.finished) {
-        response.sendRedirect("/intro.html#comment");
-    }
-    else {
-        response.setContentType("text/html;");
-        response.getWriter().println(this.finished);
-    }
+    response.sendRedirect("/intro.html#comment");
     
   }
 }

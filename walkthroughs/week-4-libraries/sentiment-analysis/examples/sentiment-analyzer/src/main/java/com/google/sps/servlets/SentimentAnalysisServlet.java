@@ -36,7 +36,7 @@ public class SentimentAnalysisServlet extends HttpServlet {
     Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
     float score = sentiment.getScore();
     languageService.close();
-
+    
     // Output the sentiment score as HTML.
     // A real project would probably store the score alongside the content.
     response.setContentType("text/html;");

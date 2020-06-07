@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ListComments extends HttpServlet {
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Integer maxComments = Integer.parseInt(request.getParameter("maxComments"));
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    //Integer maxComments = Integer.parseInt(request.getParameter("maxComments"));
     Query query = new Query("comment").addSort("timestamp", SortDirection.DESCENDING);
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -35,14 +35,15 @@ public class ListComments extends HttpServlet {
     List<Comment> comments = new ArrayList<>();
     int count = 0;
     for (Entity entity: results.asIterable()) {
-        if (count >= maxComments) break;
+        //if (count >= maxComments) break;
         long id = entity.getKey().getId();
         String email = (String) entity.getProperty("email");
         String content = (String) entity.getProperty("content");
         String timestamp = (String) entity.getProperty("timestamp");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");  
+        float sentiment = (float) entity.getProperty("sentiment");
 
-        Comment comment = new Comment(id, email, content, LocalDateTime.parse(timestamp, formatter));
+        Comment comment = new Comment(id, email, content, LocalDateTime.parse(timestamp, formatter), sentiment);
         comments.add(comment);
         count++;
     }
@@ -52,5 +53,4 @@ public class ListComments extends HttpServlet {
     response.getWriter().println(gson.toJson(comments));
 
   }
-
 }
