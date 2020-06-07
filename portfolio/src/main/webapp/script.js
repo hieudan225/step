@@ -9,12 +9,12 @@ async function getRandomImageAsync() {
 
 
 /*Handle onload for comment section in intro.html*/
-async function setMaxComments() {
+function setMaxComments() {
     let maxComments = document.getElementById("maxComments").value;
 
     const params = new URLSearchParams();
     params.append('maxComments', maxComments);
-    await fetch('/max-comments', {method: 'POST', body: params});
+    fetch('/max-comments', {method: 'POST', body: params});
     location.reload();
 }
 /*Load comments history for comment section in intro.html */
@@ -61,10 +61,10 @@ async function getExistingComments() {
 }
 
 
-async function deleteEntity(id) {
+function deleteEntity(id) {
     const params = new URLSearchParams();
     params.append('id', id);
-    await fetch('/delete-comment', {method: 'POST', body: params});
+    fetch('/delete-comment', {method: 'POST', body: params});
 }
 
 async function deleteAllComments() {
