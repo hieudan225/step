@@ -7,11 +7,8 @@ async function getRandomImageAsync() {
     document.getElementById("bg-image").style.background = "linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(" + imageURL +") no-repeat fixed center";
 }
 
-
-/*Handle onload for comment section in intro.html*/
 async function setMaxComments() {
     let maxComments = document.getElementById("maxComments").value;
-
     const params = new URLSearchParams();
     params.append('maxComments', maxComments);
     await fetch('/max-comments', {method: 'POST', body: params});
@@ -24,15 +21,14 @@ async function getExistingComments() {
     let maxCommentsRep = await fetch("/max-comments");
     let maxCommentsText = await maxCommentsRep.text();
     let maxComments = parseInt(maxCommentsText, 10);
-
+    
     
     const params = new URLSearchParams();
     params.append('maxComments', maxComments);
-    
-    let response = await fetch('/list-comments', {method: 'POST', body: params});
-    console.log("Got respone");
+    let response = await fetch('/list-comments' +"?"+ params);
+
     let json = await response.json();
-    console.log(json);
+
     let container = document.getElementById("comment-container");
     container.innerHTML = "";
     for (let i = 0; i < json.length; ++i) {
@@ -45,7 +41,7 @@ async function getExistingComments() {
         let name = document.createElement("P");
         name.innerText = "Email: " + comment.email;
         let time = document.createElement("P");
-        time.innerText = "Time: " + comment.timestamp;
+        time.innerText = "Time: " + parseTimeStamp(comment.timestamp);
         let content = document.createElement("P");
         content.innerText = "Content: " + comment.content;
         let sentiment = document.createElement("P");
@@ -58,7 +54,7 @@ async function getExistingComments() {
             deleteEntity(comment.id);
         });
         node.appendChild(name);
-        node.appendChild(timestamp);
+        node.appendChild(time);
         node.appendChild(content);
         node.appendChild(sentiment);
         node.appendChild(deleteElement);
@@ -79,12 +75,14 @@ function deleteAllComments() {
 }
 
 async function onLoad() {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("not-login").style.display = "none";
     
     let loginStatusPromise  = await fetch("/login");
     let loginStatus = await loginStatusPromise.json();
     console.log(loginStatus);
     if (!loginStatus.login) {
-        document.getElementById("login").style.display = "none";
+        document.getElementById("not-login").style.display = "block";
 
         const loginURL = loginStatus.url;
         let loginURLContainer = document.getElementById("not-login");
@@ -97,7 +95,7 @@ async function onLoad() {
         loginURLContainer.appendChild(loginURLElement);
     }
     else {
-        document.getElementById("not-login").style.display = "none";
+        document.getElementById("login").style.display = "block";
         await getExistingComments();
 
         const helloUserContainer = document.getElementById("hello-user");
@@ -117,4 +115,11 @@ async function onLoad() {
         logoffURLContainer.appendChild(logoffURLElement);
     }
     
+}
+
+function parseTimeStamp(timestamp) {
+    let string = "";
+    string += timestamp.date.year + "-" + timestamp.date.month + "-"+ timestamp.date.day + " ";
+    string += timestamp.time.hour + ":" + timestamp.time.minute;
+    return string;
 }

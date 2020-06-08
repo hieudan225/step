@@ -40,6 +40,7 @@ public class NewComment extends HttpServlet {
     float score = sentiment.getScore();
     languageService.close();
     
+    System.out.println("Your sentiment score is "+ score);
     
     Entity commentEntity = new Entity("comment");
     UserService userService = UserServiceFactory.getUserService();
@@ -53,5 +54,6 @@ public class NewComment extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
 
+    response.sendRedirect("/intro.html#comment");
   }
 }
