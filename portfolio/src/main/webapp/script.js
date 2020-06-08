@@ -69,8 +69,8 @@ function deleteEntity(id) {
     fetch('/delete-comment', {method: 'POST', body: params});
 }
 
-function deleteAllComments() {
-    let response = fetch('/delete-all-comments', {method: 'POST'});
+async function deleteAllComments() {
+    let response = await fetch('/delete-all-comments', {method: 'POST'});
     location.reload();
 }
 
