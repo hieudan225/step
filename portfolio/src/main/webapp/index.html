@@ -4,6 +4,7 @@
     <title>Dan Le's Portfolio</title>      
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer src="script.js"></script>
     <script defer src="intro-script.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -13,7 +14,7 @@
   </head>
   <body >
     <main id="swup" class="transition-fade">
-    <div class="bg-image">
+    <div id="bg-image">
       <div class="container">
         <div class="header">
                 </nav>
@@ -35,10 +36,15 @@
                                 font-family: 'Abel', sans-serif;
                                 "> portfolio</h2>
                 </div>
-                <p style="color: #fff; 
-                        position: absolute;
+                <button onclick="getRandomImageAsync()"
+                        style="position: absolute;
                         top: 90%;
-                        left: 40%;">Click <a  href = "/data">here</a> to test servlet</p>
+                        left:25%;">Click here to change the background with a random image from the server</button>
+                <p style = "color = #fff;
+                        position: absolute;
+                        top: 95%;
+                        left: 30%;">Please wait a second for the background image to be loaded.</p>
+                
                 <a class = "learn-more-btn" href="intro.html">Click here to learn more</a>
         </div>
       </div>
@@ -46,8 +52,5 @@
 
 </main>    
   </body>
-  <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script>  
-  <script type="text/javascript">
-    const swup = new Swup({linkSelector: "a:not([data-no-swup])"}); // only this line when included with script tag
-  </script>
+
 </html>
