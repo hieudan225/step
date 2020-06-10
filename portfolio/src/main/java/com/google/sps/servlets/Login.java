@@ -21,7 +21,6 @@ public class Login extends HttpServlet {
     
     UserService userService = UserServiceFactory.getUserService();
 
-    // If user is not logged in, show a login form (could also redirect to a login page)
     if (!userService.isUserLoggedIn()) {
         String loginUrl = userService.createLoginURL("/intro.html#comment");
         response.getWriter().println(gson.toJson(new LoginStatus(false, loginUrl, null)));
