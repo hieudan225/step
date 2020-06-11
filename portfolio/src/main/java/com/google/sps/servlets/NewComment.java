@@ -3,10 +3,14 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 import com.google.sps.data.Comment;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -20,13 +24,19 @@ public class NewComment extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String name = request.getParameter("name");
     String content = request.getParameter("content");
     
+    if (content.length() < 8) {
+        throw new RuntimeException("Comment content must be larger than 8 characters.");
+    }
+
     Entity commentEntity = new Entity("comment");
-    commentEntity.setProperty("name", name);
+    UserService userService = UserServiceFactory.getUserService();
+    String email = userService.getCurrentUser().getEmail();
+    commentEntity.setProperty("email", email);
     commentEntity.setProperty("content", content);
-    commentEntity.setProperty("timestamp", System.currentTimeMillis());
+    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");  
+    commentEntity.setProperty("timestamp", LocalDateTime.now().format(format));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);

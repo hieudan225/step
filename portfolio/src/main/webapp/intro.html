@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="w3-black" onload="getExistingComments()">
+<body class="w3-black" onload="onLoad()">
   <main id="swup" class="transition-fade">
 <div class="bg-image">
 <!-- Icon Bar (Sidebar - hidden on small screens) -->
@@ -64,6 +64,7 @@
   <!-- About Section -->
   <div class="w3-content w3-justify w3-text-grey w3-padding-64" id="about">
     <div>
+        
         <h2 style = "color:#fff">About me</h2>
         <hr style="width:200px" class="w3-opacity">
         <p style = "color: #fff; font-size = 25;">I'm a rising Computer Science sophomore at the University of Massachusetts - Amherst.
@@ -73,9 +74,12 @@
         <p style = "color: #fff; font-size = 25;">I enjoy cooking, listening to music, traveling, and Photography. Here are some pictures that I've took in my hometown Da-lat.
         </p>
         <p style = "color: #fff;font-size = 25;">Click here to get a random fact about me:</p>
+        
         <button onclick="fact()" style="border: 1px solid #fff; 
                                                     font-family: 'Abel', sans-serif;font-size = 25;">Fact generator</button>
+        
         <div id="fact-container" style="color:#fff;font-size = 25;"></div>
+
     </div>
    <div class="w3-row" >
         <div class="w3-col s4 w3-green w3-center">
@@ -133,17 +137,41 @@
   <div class="w3-padding-64 w3-content w3-text-grey" id="comment" >
     <h2 class="w3-text-light-grey">Comment something</h2>
     <hr style="width:200px" class="w3-opacity">
+    <div id="innerComment">
+        <!-- Login link for notLogin-status -->
+        <div id="not-login">
+            <p style="color:#fff;"> Login to comment </p>
+        </div>
+       
+        <!-- Comment section and logoff url for login-status -->
+        <div id="login">
+            <div id="hello-user"></div>
+            <!-- Set Max Comment form -->
+            <label for="maxComments" style="color:#fff;">The number of comments you want to see: </label><br>
+            <input name="maxComments" id="maxComments" min = 0 max = 10 type="number">
+            <button onclick="setMaxComments()">Set Max Comments</button>
+            <ul id= "comment-container" style="color:#fff;"></ul>
+            
+            <!-- Deleting all Comment section -->
+            <p id="delete-status" style="color:#fff"></p>
+            <button onclick="deleteAllComments()">Delete All Comments</button>
+            
+            <p id = "delete" style="color:#fff;"></p>
+            
+            <!-- Comment form -->
+             <form action="/new-comment" method="POST">
+                <!-- <label for="name" style="color:#fff;">Your name:</label><br>
+                <input type="text" id="name" name="name" minlength="3"><br> -->
+                <label for="content" style="color:#fff;">Your comment: </label><br>
+                <textarea type="text" id="content" name="content" rows="4" cols="50" minlength="8"></textarea>
+                <br><br>
+                <input type="submit" value="Submit">
+            </form>
 
-    <ul id= "comment-container" style="color:#fff;"></ul>
-
-    <form action="/new-comment" method="POST">
-        <label for="name" style="color:#fff;">Your name:</label><br>
-        <input type="text" id="name" name="name"><br>
-        <label for="content" style="color:#fff;">Your comment: </label><br>
-        <textarea id="content" name="content" rows="4" cols="50"></textarea>
-        <br><br>
-        <input type="submit" value="Submit">
-    </form>
+            <!-- Logoff URL -->
+            <div id="logoff"></div>
+        </div>
+    </div>
   </div><br>
       <!-- End Comment Section -->
 </div>

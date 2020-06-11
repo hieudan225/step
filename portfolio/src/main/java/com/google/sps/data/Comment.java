@@ -1,16 +1,16 @@
 package com.google.sps.data;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime; 
+import java.time.LocalDateTime;
+
 public class Comment {
     
     private long id;
-    private String name;
+    private String email;
     private String content;
-    private long timestamp;
+    private LocalDateTime timestamp;
 
-    public Comment(long id, String name, String content, long timestamp) {
+    public Comment(long id, String email, String content, LocalDateTime timestamp) {
         this.id = id;
-        this.name = name;
+        this.email = email;
         this.content = content;
         this.timestamp = timestamp;
     }
