@@ -9,6 +9,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 import com.google.sps.data.Comment;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,17 +26,18 @@ import javax.servlet.http.HttpServletResponse;
 public class ListComments extends HttpServlet {
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Integer maxComments = Integer.parseInt(request.getParameter("maxComments"));
     Query query = new Query("comment").addSort("timestamp", SortDirection.DESCENDING);
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
+    Iterator<Entity> entities = results.asIterator();
 
     List<Comment> comments = new ArrayList<>();
     int count = 0;
-    for (Entity entity: results.asIterable()) {
-        if (count >= maxComments) break;
+    while (count < maxComments && entities.hasNext()) {
+        Entity entity = entities.next();
         long id = entity.getKey().getId();
         String email = (String) entity.getProperty("email");
         String content = (String) entity.getProperty("content");
