@@ -23,38 +23,39 @@ public final class FindMeetingQuery {
   return: @allSchedules a hashmap with 2 key: 'mandatory' and 'optional', the values are another HashMap whose key is attandee and 
           value is the schedule of that attandee
   */
-  public static HashMap<String, HashMap<String, ArrayList<TimeRange>>> getSchedules(Collection<Event> events, MeetingRequest request) {
+  public static AllSchedules getSchedules(Collection<Event> events, MeetingRequest request) {
     Collection<String> mandatoryAttandeeSet = request.getAttendees();
     Collection<String> optionalAttandeeSet = request.getOptionalAttendees();
-    HashMap<String, HashMap<String, ArrayList<TimeRange>>> allSchedules = new HashMap<String, HashMap<String, ArrayList<TimeRange>>>();
+
+    AllSchedules allSchedules = new AllSchedules();
     for (Event event: events) {
         TimeRange timeRange = event.getWhen();
         Set<String> allAttandees = event.getAttendees();
         for (String attandee : allAttandees) {
             if (mandatoryAttandeeSet.contains(attandee)) {
-                HashMap<String, ArrayList<TimeRange>> mandatorySchedules = allSchedules.getOrDefault("mandatory", new HashMap<String, ArrayList<TimeRange>>());
+                HashMap<String, ArrayList<TimeRange>> mandatorySchedules = allSchedules.getMandatorySchedules();
                 ArrayList<TimeRange> attandeeSchedule = mandatorySchedules.getOrDefault(attandee, new ArrayList<TimeRange>());
                 attandeeSchedule.add(timeRange);
                 mandatorySchedules.put(attandee, attandeeSchedule);
-                allSchedules.put("mandatory", mandatorySchedules);
+                allSchedules.setMandatorySchedules(mandatorySchedules);
             }
             else if (optionalAttandeeSet.contains(attandee)){
-                HashMap<String, ArrayList<TimeRange>> optionalSchedules = allSchedules.getOrDefault("optional", new HashMap<String, ArrayList<TimeRange>>());
+                HashMap<String, ArrayList<TimeRange>> optionalSchedules = allSchedules.getOptionalSchedules();
                 ArrayList<TimeRange> attandeeSchedule = optionalSchedules.getOrDefault(attandee, new ArrayList<TimeRange>());
                 attandeeSchedule.add(timeRange);
                 optionalSchedules.put(attandee, attandeeSchedule);
-                allSchedules.put("optional", optionalSchedules);
+                allSchedules.setOptionalSchedules(optionalSchedules);
             }
             
         }
     }
     return allSchedules;
   }
-  /*Given two overlapped TimeRanges, return the merged TimeRange
+  /*Given two overlapped TimeRanges, return the union TimeRange
   param: @one and @two: overlapped TimeRanges
   return: @mergeTimeSlot: merge TimeRange
   */
-  public static TimeRange mergeTwoOverlappedTimeRanges(TimeRange one, TimeRange two) {
+  public static TimeRange unionTwoOverlappedTimeRanges(TimeRange one, TimeRange two) {
     int start = (one.start() < two.start())? one.start() : two.start();
     int end = (one.end() > two.end())? one.end() : two.end();
     TimeRange mergedTimeSlot = TimeRange.fromStartEnd(start, end, false);
@@ -69,21 +70,19 @@ public final class FindMeetingQuery {
   public static ArrayList<TimeRange> mergeTimeRangeWithAccumulatedTimeRanges(ArrayList<TimeRange> accum, TimeRange newTimeRange) {
     TimeRange lastTimeRange = (accum.size() == 0)? null: accum.get(accum.size() - 1);
     if (lastTimeRange == null) {
-        ArrayList<TimeRange> newAccum = new ArrayList<>();
-        newAccum.add(newTimeRange);
-        return newAccum;
+        accum.add(newTimeRange);
     }
     else {
         if (lastTimeRange.overlaps(newTimeRange)) {
             accum.remove(accum.size() - 1);
-            TimeRange mergedTimeRange = mergeTwoOverlappedTimeRanges(lastTimeRange, newTimeRange);
-            accum.add(mergedTimeRange);
+            TimeRange unionTimeRange = unionTwoOverlappedTimeRanges(lastTimeRange, newTimeRange);
+            accum.add(unionTimeRange);
         }
         else {
             accum.add(newTimeRange);
         }
-        return accum;
-    }    
+    }  
+    return accum;  
   }
 
   /* Given a list of schedules and an optional list of pre-existing TimeRange, return a new list of TimeRange that merges all the schedules and pre-existing TimeRange
@@ -101,7 +100,6 @@ public final class FindMeetingQuery {
         Collections.sort(attandeeSchedule, comparatorByStart);
         allSchedules.put(attandee, attandeeSchedule);
         
-        System.out.println(attandeeSchedule); 
         int index1 = 0;
         int index2 = 0;
         ArrayList<TimeRange> newMergeSchedule = new ArrayList<>();
@@ -110,8 +108,8 @@ public final class FindMeetingQuery {
             TimeRange attandeeSlot = attandeeSchedule.get(index2);
 
             if (mergeSlot.overlaps(attandeeSlot)) {
-                TimeRange newMergeSlot = mergeTwoOverlappedTimeRanges(mergeSlot, attandeeSlot);
-                newMergeSchedule = mergeTimeRangeWithAccumulatedTimeRanges(newMergeSchedule, newMergeSlot);
+                TimeRange unionSlot = unionTwoOverlappedTimeRanges(mergeSlot, attandeeSlot);
+                newMergeSchedule = mergeTimeRangeWithAccumulatedTimeRanges(newMergeSchedule, unionSlot);
                 index1++;
                 index2++;
             }
@@ -152,30 +150,24 @@ public final class FindMeetingQuery {
         if (TimeRange.END_OF_DAY - TimeRange.START_OF_DAY >= request.getDuration()) {
             possibleSlots.add(TimeRange.WHOLE_DAY);
         }
-    }
-    else {
-        for (int i = -1; i < mergeSchedule.size(); i++) {
-            if (i == -1) {
-                TimeRange next = mergeSchedule.get(i + 1);
-                if (next.start() - TimeRange.START_OF_DAY >= request.getDuration()) {
-                    possibleSlots.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, next.start(), false));
-                }
-                
+    } else {
+        
+        TimeRange curr = mergeSchedule.get(0);
+        if (curr.start() - TimeRange.START_OF_DAY >= request.getDuration()) {
+            possibleSlots.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, curr.start(), false));
+        }  
+        
+        for (int i = 0; i < mergeSchedule.size() - 1; i++) {
+            curr = mergeSchedule.get(i);
+            TimeRange next = mergeSchedule.get(i + 1);
+            if (next.start() - curr.end() >= request.getDuration()) {
+                possibleSlots.add(TimeRange.fromStartEnd(curr.end(), next.start(), false));
             }
-            else if (i == mergeSchedule.size() - 1) {
-                TimeRange curr = mergeSchedule.get(i);
-                if (TimeRange.END_OF_DAY - curr.end() >= request.getDuration()) {
-                    possibleSlots.add(TimeRange.fromStartEnd(curr.end(), TimeRange.END_OF_DAY, true));
-                }
-                
-            }
-            else {
-                TimeRange curr = mergeSchedule.get(i);
-                TimeRange next = mergeSchedule.get(i + 1);
-                if (next.start() - curr.end() >= request.getDuration()) {
-                    possibleSlots.add(TimeRange.fromStartEnd(curr.end(), next.start(), false));
-                }
-            }
+        }
+        
+        curr = mergeSchedule.get(mergeSchedule.size() - 1);
+        if (TimeRange.END_OF_DAY - curr.end() >= request.getDuration()) {
+            possibleSlots.add(TimeRange.fromStartEnd(curr.end(), TimeRange.END_OF_DAY, true));
         }
     }
     
@@ -200,10 +192,10 @@ public final class FindMeetingQuery {
   return: @fitMandatoryAndOptional or @fitAllMandatory
   */
   
-  public static List<TimeRange> basicFitOptional (HashMap<String, HashMap<String, ArrayList<TimeRange>>> allSchedules, MeetingRequest request) {
+  public static List<TimeRange> basicFitOptional (AllSchedules allSchedules, MeetingRequest request) {
     // Merge all schedules of mandatory and optional attandees
-    HashMap<String, ArrayList<TimeRange>> mandatorySchedules = allSchedules.getOrDefault("mandatory", new HashMap<String, ArrayList<TimeRange>>());
-    HashMap<String, ArrayList<TimeRange>> optionalSchedules = allSchedules.getOrDefault("optional", new HashMap<String, ArrayList<TimeRange>>());
+    HashMap<String, ArrayList<TimeRange>> mandatorySchedules = allSchedules.getMandatorySchedules();
+    HashMap<String, ArrayList<TimeRange>> optionalSchedules = allSchedules.getOptionalSchedules();
 
     List<TimeRange> mergeMandatorySchedules = mergeAllSchedules(mandatorySchedules, null);
     List<TimeRange> fitAllMandatory = fitAllSchedules(mergeMandatorySchedules, request);
@@ -215,7 +207,7 @@ public final class FindMeetingQuery {
   }
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    HashMap<String, HashMap<String, ArrayList<TimeRange>>> allSchedules = getSchedules(events, request);
+    AllSchedules allSchedules = getSchedules(events, request);
     List<TimeRange> basicFitOptional = basicFitOptional(allSchedules, request);
     return basicFitOptional;
   }
