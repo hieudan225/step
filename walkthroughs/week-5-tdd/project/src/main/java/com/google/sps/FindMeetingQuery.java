@@ -17,11 +17,10 @@ import com.google.sps.*;
 import java.util.*;
 public final class FindMeetingQuery {
 
-  /* Given all events, return a HashMap that contains the schedule of mandatory attandees and optional attandees 
+  /* Given all events, return an object that contains the schedule of mandatory attandees and optional attandees 
   param: @events: all events containing time and attandees list 
          @request: Meeting requests containing attandees list
-  return: @allSchedules a hashmap with 2 key: 'mandatory' and 'optional', the values are another HashMap whose key is attandee and 
-          value is the schedule of that attandee
+  return: @allSchedules 
   */
   public static AllSchedules getSchedules(Collection<Event> events, MeetingRequest request) {
     Collection<String> mandatoryAttandeeSet = request.getAttendees();
