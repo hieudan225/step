@@ -9,7 +9,6 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 import com.google.sps.data.Comment;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.logging.Logger;
 
 /** Servlet that returns a list of comments */
 @WebServlet("/list-comments")
@@ -32,23 +32,23 @@ public class ListComments extends HttpServlet {
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    Iterator<Entity> entities = results.asIterator();
 
     List<Comment> comments = new ArrayList<>();
     int count = 0;
-    while (count < maxComments && entities.hasNext()) {
-        Entity entity = entities.next();
+    for (Entity entity: results.asIterable()) {
+        if (count >= maxComments) break;
         long id = entity.getKey().getId();
         String email = (String) entity.getProperty("email");
         String content = (String) entity.getProperty("content");
         String timestamp = (String) entity.getProperty("timestamp");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");  
+        Float sentiment =  ((Double) entity.getProperty("sentiment")).floatValue();
 
-        Comment comment = new Comment(id, email, content, LocalDateTime.parse(timestamp, formatter));
+        
+        Comment comment = new Comment(id, email, content, LocalDateTime.parse(timestamp, formatter), sentiment);
         comments.add(comment);
         count++;
     }
-
     Gson gson = new Gson();
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(comments));

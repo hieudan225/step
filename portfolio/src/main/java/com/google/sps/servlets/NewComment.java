@@ -6,6 +6,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import com.google.sps.data.Comment;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,15 @@ public class NewComment extends HttpServlet {
         throw new RuntimeException("Comment content must be larger than 8 characters.");
     }
 
+    Document doc =
+        Document.newBuilder().setContent(content).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+    languageService.close();
+    
+    System.out.println("Your sentiment score is "+ score);
+    
     Entity commentEntity = new Entity("comment");
     UserService userService = UserServiceFactory.getUserService();
     String email = userService.getCurrentUser().getEmail();
@@ -37,6 +49,7 @@ public class NewComment extends HttpServlet {
     commentEntity.setProperty("content", content);
     DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");  
     commentEntity.setProperty("timestamp", LocalDateTime.now().format(format));
+    commentEntity.setProperty("sentiment", score);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
